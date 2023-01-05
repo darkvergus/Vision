@@ -20,7 +20,7 @@ namespace VisionUI::Settings
 		bool bringToFrontOnFocus		= true;
 		bool collapsable				= false;
 		bool allowInputs				= true;
-		bool titleBar					= true;
+		bool titleBar					= false;
 		bool autoSize					= false;
 	};
 }

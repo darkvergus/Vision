@@ -24,7 +24,7 @@ VisionRendering::Core::ShapeDrawer::ShapeDrawer(VisionRendering::Core::Renderer&
 	m_lineMesh = new Resources::Mesh(vertices, { 0, 1 }, 0);
 
 	std::string vertexShader = R"(
-#version 430 core
+#version 460 core
 
 uniform vec3 start;
 uniform vec3 end;
@@ -39,7 +39,7 @@ void main()
 )";
 
 	std::string fragmentShader = R"(
-#version 430 core
+#version 460 core
 
 uniform vec3 color;
 
@@ -54,7 +54,7 @@ void main()
 	m_lineShader = VisionRendering::Resources::Loaders::ShaderLoader::CreateFromSource(vertexShader, fragmentShader);
 
 	vertexShader = R"(
-#version 430 core
+#version 460 core
 
 uniform vec3 start;
 uniform vec3 end;
@@ -72,7 +72,7 @@ void main()
 )";
 
 	fragmentShader = R"(
-#version 430 core
+#version 460 core
 
 uniform vec3 color;
 uniform vec3 viewPos;

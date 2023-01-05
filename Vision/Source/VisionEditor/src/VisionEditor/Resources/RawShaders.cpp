@@ -5,7 +5,7 @@ std::pair<std::string, std::string> VisionEditor::Resources::RawShaders::GetGrid
 	std::pair<std::string, std::string> source;
 
 	source.first = R"(
-#version 430 core
+#version 460 core
 
 layout (location = 0) in vec3 geo_Pos;
 layout (location = 1) in vec2 geo_TexCoords;
@@ -36,7 +36,7 @@ void main()
 )";
 
 	source.second = R"(
-#version 430 core
+#version 460 core
 
 out vec4 FRAGMENT_COLOR;
 
@@ -113,7 +113,7 @@ std::pair<std::string, std::string> VisionEditor::Resources::RawShaders::GetGizm
 	std::pair<std::string, std::string> source;
 
 	source.first = R"(
-#version 430 core
+#version 460 core
 
 layout (location = 0) in vec3 geo_Pos;
 layout (location = 2) in vec3 geo_Normal;
@@ -211,7 +211,7 @@ void main()
 )";
 
 	source.second = R"(
-#version 430 core
+#version 460 core
 
 out vec4 FRAGMENT_COLOR;
 
@@ -235,7 +235,7 @@ std::pair<std::string, std::string> VisionEditor::Resources::RawShaders::GetBill
 	std::pair<std::string, std::string> source;
 
 	source.first = R"(
-#version 430 core
+#version 460 core
 
 layout (location = 0) in vec3 geo_Pos;
 layout (location = 1) in vec2 geo_TexCoords;
@@ -285,7 +285,7 @@ void main()
 })";
 
 	source.second = R"(
-#version 430 core
+#version 460 core
 
 out vec4 FRAGMENT_COLOR;
 

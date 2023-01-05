@@ -47,7 +47,7 @@ void VisionEditor::Core::Editor::SetupUI()
 
 	m_panelsManager.CreatePanel<VisionEditor::Panels::MenuBar>("Menu Bar");
 	m_panelsManager.CreatePanel<VisionEditor::Panels::AssetBrowser>("Asset Browser", true, settings, m_context.engineAssetsPath, m_context.projectAssetsPath, m_context.projectScriptsPath);
-	m_panelsManager.CreatePanel<VisionEditor::Panels::HardwareInfo>("Hardware Info", false, settings, 0.2f, 50);
+	m_panelsManager.CreatePanel<VisionEditor::Panels::HardwareInfo>("Hardware Info", true, settings, 0.2f, 50);
 	m_panelsManager.CreatePanel<VisionEditor::Panels::Profiler>("Profiler", true, settings, 0.25f);
 	m_panelsManager.CreatePanel<VisionEditor::Panels::Console>("Console", true, settings);
 	m_panelsManager.CreatePanel<VisionEditor::Panels::Hierarchy>("Hierarchy", true, settings);

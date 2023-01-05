@@ -1,12 +1,12 @@
-executable_name=Game
 gravity=-9.810000
+executable_name=Game
 x_resolution=1280
-multisampling=true
 y_resolution=720
-start_scene=Scene.scene
+multisampling=true
 fullscreen=false
+start_scene=Main.scene
 vsync=true
 samples=4
 opengl_major=4
-opengl_minor=3
+opengl_minor=6
 dev_build=true

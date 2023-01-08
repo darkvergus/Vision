@@ -918,6 +918,22 @@ public:
 	}
 };
 
+void OnFileChanged(std::string file)
+{
+	switch (VisionTools::Utils::PathParser::GetFileType(file))
+	{
+	case VisionTools::Utils::PathParser::EFileType::SHADER:
+		auto& shaderManager = SERVICE(VisionCore::ResourceManagement::ShaderManager);
+		std::string resourcePath = EDITOR_EXEC(GetResourcePath(file));
+		if (shaderManager.IsResourceRegistered(resourcePath))
+		{
+			LOG_INFO("Shader changed (" + file + "), automatic shader recompilation called");
+			VisionRendering::Resources::Loaders::ShaderLoader::Recompile(*shaderManager[resourcePath], file);
+		}
+		break;
+	}
+}
+
 VisionEditor::Panels::AssetBrowser::AssetBrowser
 (
 	const std::string& p_title,
@@ -930,7 +946,8 @@ VisionEditor::Panels::AssetBrowser::AssetBrowser
 	PanelWindow(p_title, p_opened, p_windowSettings),
 	m_engineAssetFolder(p_engineAssetFolder),
 	m_projectAssetFolder(p_projectAssetFolder),
-	m_projectScriptFolder(p_projectScriptFolder)
+	m_projectScriptFolder(p_projectScriptFolder),
+	m_projectAssetWatcher(m_projectAssetFolder, std::chrono::milliseconds(2000))
 {
 	if (!std::filesystem::exists(m_projectAssetFolder))
 	{
@@ -970,6 +987,12 @@ VisionEditor::Panels::AssetBrowser::AssetBrowser
 	m_assetList = &CreateWidget<Layout::Group>();
 
 	Fill();
+
+	m_projectAssetWatcher.FileChangedEvent += [](const std::string& file)
+	{
+		EDITOR_EXEC(DelayAction(std::bind(&OnFileChanged, file), 0));
+	};
+	m_projectAssetWatcher.Start();
 }
 
 void VisionEditor::Panels::AssetBrowser::Fill()

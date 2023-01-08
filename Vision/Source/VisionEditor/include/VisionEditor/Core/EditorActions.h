@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mutex>
+
 #include <VisionCore/Global/ServiceLocator.h>
 #include <VisionTools/Filesystem/IniFile.h>
 #include <VisionTools/Utils/PathParser.h>
@@ -389,6 +391,7 @@ namespace VisionEditor::Core
 		EActorSpawnMode m_actorSpawnMode = EActorSpawnMode::ORIGIN;
 		EEditorMode m_editorMode = EEditorMode::EDIT;
 
+		std::mutex m_delayedActionMutex;
 		std::vector<std::pair<uint32_t, std::function<void()>>> m_delayedActions;
 
 		tinyxml2::XMLDocument m_sceneBackup;

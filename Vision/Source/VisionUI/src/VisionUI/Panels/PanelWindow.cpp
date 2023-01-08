@@ -11,6 +11,7 @@ VisionUI::Panels::PanelWindow::PanelWindow(const std::string& p_name, bool p_ope
 	scrollable(p_floatingPanelSettings.scrollable),
 	dockable(p_floatingPanelSettings.dockable),
 	hideBackground(p_floatingPanelSettings.hideBackground),
+	titleBar(p_floatingPanelSettings.titleBar),
 	forceHorizontalScrollbar(p_floatingPanelSettings.forceHorizontalScrollbar),
 	forceVerticalScrollbar(p_floatingPanelSettings.forceVerticalScrollbar),
 	allowHorizontalScrollbar(p_floatingPanelSettings.allowHorizontalScrollbar),
@@ -124,7 +125,7 @@ void VisionUI::Panels::PanelWindow::_Draw_Impl()
 		ImVec2 maxSizeConstraint = Internal::Converter::ToImVec2(maxSize);
 
 		/* Cancel constraint if x or y is <= 0.f */
-		if (minSizeConstraint.x <= 0.f || minSizeConstraint.y <= 0.f)
+		if (minSizeConstraint.x <= 0.0f || minSizeConstraint.y <= 0.0f)
 			minSizeConstraint = { 0.0f, 0.0f };
 
 		if (maxSizeConstraint.x <= 0.f || maxSizeConstraint.y <= 0.f)

@@ -138,7 +138,7 @@ void VisionEditor::Core::Editor::UpdatePlayMode(float p_deltaTime)
 		m_context.audioEngine->Update();
 	}
 
-	ImGui::GetIO().DisableMouseUpdate = m_context.window->GetCursorMode() == VisionWindowing::Cursor::ECursorMode::DISABLED;
+	ImGui::GetIO().MouseDrawCursor = m_context.window->GetCursorMode() == VisionWindowing::Cursor::ECursorMode::DISABLED;
 
 	if (m_editorActions.GetCurrentEditorMode() == EditorActions::EEditorMode::FRAME_BY_FRAME)
 		m_editorActions.PauseGame();

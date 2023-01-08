@@ -82,6 +82,5 @@ void VisionEditor::Panels::Toolbar::_Draw_Impl()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(10, 10));
 
 	VisionUI::Panels::PanelWindow::_Draw_Impl();
-
 	ImGui::PopStyleVar();
 }

@@ -25,18 +25,21 @@ VisionEditor::Panels::HardwareInfo::HardwareInfo
 	m_cpuUsage->minScale = 0.0f;
 	m_cpuUsage->maxScale = 100.0f;
 	m_cpuUsage->size.y = 75.0f;
+	m_cpuUsage->size.x = 350.0f;
 	m_cpuUsage->data.resize(m_maxElements, 0);
 	m_cpuUsage->overlay = "CPU Usage (%)";
 
 	m_gpuUsage->minScale = 0.0f;
 	m_gpuUsage->maxScale = 100.0f;
 	m_gpuUsage->size.y = 75.0f;
+	m_gpuUsage->size.x = 350.0f;
 	m_gpuUsage->data.resize(m_maxElements, 0);
 	m_gpuUsage->overlay = "GPU Usage (%)";
 
 	m_ramUsage->minScale = 0.0f;
 	m_ramUsage->maxScale = 100.0f;
 	m_ramUsage->size.y = 75.0f;
+	m_ramUsage->size.x = 350.0f;
 	m_ramUsage->data.resize(m_maxElements, 0);
 	m_ramUsage->overlay = "RAM Usage (%)";
 }

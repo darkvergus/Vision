@@ -7,6 +7,7 @@
 #include <VisionUI/Panels/PanelWindow.h>
 #include <VisionUI/Widgets/Layout/TreeNode.h>
 #include <VisionRendering/Resources/Loaders/TextureLoader.h>
+#include <VisionTools/Filesystem/FileWatcher.h>
 
 namespace VisionEditor::Panels
 {
@@ -61,6 +62,7 @@ namespace VisionEditor::Panels
 		std::string m_engineAssetFolder;
 		std::string m_projectAssetFolder;
 		std::string m_projectScriptFolder;
+		VisionTools::Filesystem::FileWatcher m_projectAssetWatcher;
 		VisionUI::Widgets::Layout::Group* m_assetList;
 		std::unordered_map<VisionUI::Widgets::Layout::TreeNode*, std::string> m_pathUpdate;
 	};

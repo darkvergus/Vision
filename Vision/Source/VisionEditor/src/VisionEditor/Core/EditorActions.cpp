@@ -316,11 +316,14 @@ void VisionEditor::Core::EditorActions::BuildAtLocation(const std::string & p_co
 
 void VisionEditor::Core::EditorActions::DelayAction(std::function<void()> p_action, uint32_t p_frames)
 {
+	m_delayedActionMutex.lock();
 	m_delayedActions.emplace_back(p_frames + 1, p_action);
+	m_delayedActionMutex.unlock();
 }
 
 void VisionEditor::Core::EditorActions::ExecuteDelayedActions()
 {
+	m_delayedActionMutex.lock();
 	std::for_each(m_delayedActions.begin(), m_delayedActions.end(), [](std::pair<uint32_t, std::function<void()>> & p_element)
 	{
 		--p_element.first;
@@ -333,6 +336,7 @@ void VisionEditor::Core::EditorActions::ExecuteDelayedActions()
 	{
 		return p_element.first == 0;
 	}), m_delayedActions.end());
+	m_delayedActionMutex.unlock();
 }
 
 VisionEditor::Core::Context& VisionEditor::Core::EditorActions::GetContext()

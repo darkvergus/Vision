@@ -4,7 +4,7 @@ VisionMaths::FTransform::FTransform(FVector3 p_localPosition, FQuaternion p_loca
 	m_notificationHandlerID(-1),
 	m_parent(nullptr)
 {
-	GenerateMatrices(p_localPosition, p_localRotation, p_localScale);
+	GenerateMatricesLocal(p_localPosition, p_localRotation, p_localScale);
 }
 
 VisionMaths::FTransform::~FTransform()
@@ -25,7 +25,7 @@ void VisionMaths::FTransform::NotificationHandler(Internal::TransformNotifier::E
 		* RemoveParent() is not called here because it is unsafe to remove a notification handler
 		* while the parent is iterating on his notification handlers (Segfault otherwise)
 		*/
-		GenerateMatrices(m_worldPosition, m_worldRotation, m_worldScale);
+		GenerateMatricesLocal(m_worldPosition, m_worldRotation, m_worldScale);
 		m_parent = nullptr;
 		UpdateWorldMatrix();
 		break;
@@ -60,7 +60,17 @@ bool VisionMaths::FTransform::HasParent() const
 	return m_parent != nullptr;
 }
 
-void VisionMaths::FTransform::GenerateMatrices(FVector3 p_position, FQuaternion p_rotation, FVector3 p_scale)
+void VisionMaths::FTransform::GenerateMatricesWorld(FVector3 p_position, FQuaternion p_rotation, FVector3 p_scale)
+{
+	m_worldMatrix = FMatrix4::Translation(p_position) * FQuaternion::ToMatrix4(FQuaternion::Normalize(p_rotation)) * FMatrix4::Scaling(p_scale);
+	m_worldPosition = p_position;
+	m_worldRotation = p_rotation;
+	m_worldScale = p_scale;
+
+	UpdateLocalMatrix();
+}
+
+void VisionMaths::FTransform::GenerateMatricesLocal(FVector3 p_position, FQuaternion p_rotation, FVector3 p_scale)
 {
 	m_localMatrix = FMatrix4::Translation(p_position) * FQuaternion::ToMatrix4(FQuaternion::Normalize(p_rotation)) * FMatrix4::Scaling(p_scale);
 	m_localPosition = p_position;
@@ -78,34 +88,42 @@ void VisionMaths::FTransform::UpdateWorldMatrix()
 	Notifier.NotifyChildren(Internal::TransformNotifier::ENotification::TRANSFORM_CHANGED);
 }
 
+void VisionMaths::FTransform::UpdateLocalMatrix()
+{
+	m_localMatrix = HasParent() ? FMatrix4::Inverse(m_parent->m_worldMatrix) * m_worldMatrix : m_worldMatrix;
+	PreDecomposeLocalMatrix();
+
+	Notifier.NotifyChildren(Internal::TransformNotifier::ENotification::TRANSFORM_CHANGED);
+}
+
 void VisionMaths::FTransform::SetLocalPosition(FVector3 p_newPosition)
 {
-	GenerateMatrices(p_newPosition, m_localRotation, m_localScale);
+	GenerateMatricesLocal(p_newPosition, m_localRotation, m_localScale);
 }
 
 void VisionMaths::FTransform::SetLocalRotation(FQuaternion p_newRotation)
 {
-	GenerateMatrices(m_localPosition, p_newRotation, m_localScale);
+	GenerateMatricesLocal(m_localPosition, p_newRotation, m_localScale);
 }
 
 void VisionMaths::FTransform::SetLocalScale(FVector3 p_newScale)
 {
-	GenerateMatrices(m_localPosition, m_localRotation, p_newScale);
+	GenerateMatricesLocal(m_localPosition, m_localRotation, p_newScale);
 }
 
 void VisionMaths::FTransform::SetWorldPosition(FVector3 p_newPosition)
 {
-	GenerateMatrices(p_newPosition, m_worldRotation, m_worldScale);
+	GenerateMatricesWorld(p_newPosition, m_worldRotation, m_worldScale);
 }
 
 void VisionMaths::FTransform::SetWorldRotation(FQuaternion p_newRotation)
 {
-	GenerateMatrices(m_worldPosition, p_newRotation, m_worldScale);
+	GenerateMatricesWorld(m_worldPosition, p_newRotation, m_worldScale);
 }
 
 void VisionMaths::FTransform::SetWorldScale(FVector3 p_newScale)
 {
-	GenerateMatrices(m_worldPosition, m_worldRotation, p_newScale);
+	GenerateMatricesWorld(m_worldPosition, m_worldRotation, p_newScale);
 }
 
 void VisionMaths::FTransform::TranslateLocal(const FVector3& p_translation)

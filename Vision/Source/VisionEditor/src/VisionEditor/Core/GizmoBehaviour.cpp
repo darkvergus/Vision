@@ -105,7 +105,7 @@ VisionMaths::FVector2 VisionEditor::Core::GizmoBehaviour::GetScreenDirection(con
 void VisionEditor::Core::GizmoBehaviour::ApplyTranslation(const VisionMaths::FMatrix4& p_viewMatrix, const VisionMaths::FMatrix4& p_projectionMatrix, const VisionMaths::FVector2& p_viewSize) const
 {
 	auto unitsPerPixel = 0.001f * m_distanceToActor;
-	auto originPosition = m_originalTransform.GetLocalPosition();
+	auto originPosition = m_originalTransform.GetWorldPosition();
 
 	auto screenDirection = GetScreenDirection(p_viewMatrix, p_projectionMatrix, p_viewSize);
 
@@ -117,13 +117,13 @@ void VisionEditor::Core::GizmoBehaviour::ApplyTranslation(const VisionMaths::FMa
 		translationCoefficient = SnapValue(translationCoefficient, VisionEditor::Settings::EditorSettings::TranslationSnapUnit);
 	}
 
-	m_target->transform.SetLocalPosition(originPosition + GetRealDirection() * translationCoefficient);
+	m_target->transform.SetWorldPosition(originPosition + GetRealDirection(true) * translationCoefficient);
 }
 
 void VisionEditor::Core::GizmoBehaviour::ApplyRotation(const VisionMaths::FMatrix4& p_viewMatrix, const VisionMaths::FMatrix4& p_projectionMatrix, const VisionMaths::FVector2& p_viewSize) const
 {
 	auto unitsPerPixel = 0.2f;
-	auto originRotation = m_originalTransform.GetLocalRotation();
+	auto originRotation = m_originalTransform.GetWorldRotation();
 
 	auto screenDirection = GetScreenDirection(p_viewMatrix, p_projectionMatrix, p_viewSize);
 	screenDirection = VisionMaths::FVector2(-screenDirection.y, screenDirection.x);
@@ -137,13 +137,13 @@ void VisionEditor::Core::GizmoBehaviour::ApplyRotation(const VisionMaths::FMatri
 	}
 
 	auto rotationToApply = VisionMaths::FQuaternion(VisionMaths::FVector3(GetFakeDirection() * rotationCoefficient));
-	m_target->transform.SetLocalRotation(originRotation * rotationToApply);
+	m_target->transform.SetWorldRotation(originRotation * rotationToApply);
 }
 
 void VisionEditor::Core::GizmoBehaviour::ApplyScale(const VisionMaths::FMatrix4& p_viewMatrix, const VisionMaths::FMatrix4& p_projectionMatrix, const VisionMaths::FVector2& p_viewSize) const
 {
 	auto unitsPerPixel = 0.01f;
-	auto originScale = m_originalTransform.GetLocalScale();
+	auto originScale = m_originalTransform.GetWorldScale();
 
 	auto screenDirection = GetScreenDirection(p_viewMatrix, p_projectionMatrix, p_viewSize);
 
@@ -162,7 +162,7 @@ void VisionEditor::Core::GizmoBehaviour::ApplyScale(const VisionMaths::FMatrix4&
 	newScale.y = std::max(newScale.y, 0.0001f);
 	newScale.z = std::max(newScale.z, 0.0001f);
 
-	m_target->transform.SetLocalScale(newScale);
+	m_target->transform.SetWorldScale(newScale);
 }
 
 void VisionEditor::Core::GizmoBehaviour::ApplyOperation(const VisionMaths::FMatrix4& p_viewMatrix, const VisionMaths::FMatrix4& p_projectionMatrix, const VisionMaths::FVector2& p_viewSize)

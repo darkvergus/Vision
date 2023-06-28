@@ -6,7 +6,7 @@
 VisionCore::ECS::Components::CTransform::CTransform(ECS::Actor& p_owner, VisionMaths::FVector3 p_localPosition, VisionMaths::FQuaternion p_localRotation, VisionMaths::FVector3 p_localScale) :
 AComponent(p_owner)
 {
-	m_transform.GenerateMatrices(p_localPosition, p_localRotation, p_localScale);
+	m_transform.GenerateMatricesLocal(p_localPosition, p_localRotation, p_localScale);
 }
 
 std::string VisionCore::ECS::Components::CTransform::GetName()
@@ -158,7 +158,7 @@ void VisionCore::ECS::Components::CTransform::OnSerialize(tinyxml2::XMLDocument&
 
 void VisionCore::ECS::Components::CTransform::OnDeserialize(tinyxml2::XMLDocument & p_doc, tinyxml2::XMLNode * p_node)
 {
-	m_transform.GenerateMatrices
+	m_transform.GenerateMatricesLocal
 	(
 		VisionCore::Helpers::Serializer::DeserializeVec3(p_doc, p_node, "position"),
 		VisionCore::Helpers::Serializer::DeserializeQuat(p_doc, p_node, "rotation"),

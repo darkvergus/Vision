@@ -36,7 +36,7 @@ void VisionCore::Scripting::LuaGlobalsBinder::BindGlobals(sol::state & p_luaStat
 		/* Methods */
 		"FindActorByName", &Scene::FindActorByName,
 		"FindActorByTag", &Scene::FindActorByTag,
-		"FindActorsByName", &Scene::FindActorsByTag,
+		"FindActorsByName", &Scene::FindActorsByName,
 		"FindActorsByTag", &Scene::FindActorsByTag,
 		"CreateActor", CreateActorOverload
 		);
